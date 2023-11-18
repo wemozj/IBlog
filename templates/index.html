@@ -5,5 +5,11 @@
 {% endblock %} %}
 
 {% block content %}
-    程序员练级手册之入门实践
+
+{% for post in posts %}
+    <a href="{{ url_for('post', post_id=post['id']) }}">
+        <h2>{{ post["title"] }}</h2>
+    </a>
+{% endfor %}
+
 {% endblock %}
