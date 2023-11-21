@@ -26,7 +26,7 @@ def index():
 
 
 @app.route('/posts/<int:post_id>', methods=['GET', 'POST'])
-def post(post_id):
+def post(post_id:int):
     post = get_post(post_id)
     return render_template('post.html', post=post)
 
@@ -46,6 +46,17 @@ def new():
             return redirect(url_for('index'))
 
     return render_template('new.html')
+
+
+@app.route('/posts/<int:post_id>/delete', methods=('POST',))
+def delete(post_id: int):
+    post = get_post(post_id)
+    conn = get_db_conn()
+    conn.execute('DELETE FROM posts WHERE id = ?', (post_id,))
+    conn.commit()
+    conn.close()
+    flash(f"{post['title']}文章删除成功")
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

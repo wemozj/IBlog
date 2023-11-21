@@ -9,7 +9,7 @@
 {% for post in posts %}
     <a href="{{ url_for('post', post_id=post['id']) }}">
         <h2>{{ post["title"] }}</h2>
-        create time: {{ post['created_time'] }}
+        create time: {{ post['created_time'] }} 编辑: {{ url_for('post', post_id=post['id']) }}}}
 
     </a>
 {% endfor %}
