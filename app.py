@@ -21,7 +21,7 @@ def get_post(post_id: int):
 @app.route('/')
 def index():
     conn = get_db_conn()
-    posts = conn.execute('SELECT * FROM posts').fetchall()
+    posts = conn.execute('SELECT * FROM posts order by created_time desc').fetchall()
     return render_template('index.html', posts=posts)
 
 
@@ -33,8 +33,6 @@ def post(post_id):
 
 @app.route('/posts/new', methods=['POST', 'GET'])
 def new():
-    if request.method == 'GET':
-        return render_template('new.html')
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
@@ -45,7 +43,9 @@ def new():
             conn.execute('INSERT INTO posts (title, content) VALUES (?,?)', (title, content))
             conn.commit()
             flash('文章发布成功')
-        return redirect(url_for('index'))
+            return redirect(url_for('index'))
+
+    return render_template('new.html')
 
 
 if __name__ == '__main__':
